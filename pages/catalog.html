@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="sw">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<meta name="description" content="Katalogi ya Tyre Plaza – Tairi, Betri na Rims Mwanza Tanzania. Chagua aina, brand na size unayotaka."/>
+<title>Katalogi ya Bidhaa – Tyre Plaza</title>
+<link rel="stylesheet" href="../css/style.css"/>
+<style>
+.catalog-layout{display:grid;grid-template-columns:280px 1fr;gap:2rem;align-items:start}
+.sidebar{background:var(--navy2);border:1px solid var(--border);border-radius:10px;padding:1.8rem;position:sticky;top:90px}
+.sidebar h3{font-size:.78rem;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);margin-bottom:1rem;margin-top:1.5rem;padding-bottom:.5rem;border-bottom:1px solid var(--border)}
+.sidebar h3:first-child{margin-top:0}
+.sidebar-check{display:flex;flex-direction:column;gap:.5rem}
+.sidebar-check label{display:flex;align-items:center;gap:.6rem;font-size:.82rem;color:var(--dim);cursor:pointer;transition:color .2s}
+.sidebar-check label:hover{color:var(--white)}
+.sidebar-check input[type=checkbox]{accent-color:var(--red);width:14px;height:14px}
+.clear-btn{background:none;border:1px solid rgba(192,24,26,.3);color:var(--red2);font-size:.72rem;font-family:'Poppins',sans-serif;padding:.35rem .8rem;border-radius:4px;cursor:pointer;transition:all .2s;margin-top:1rem;width:100%}
+.clear-btn:hover{background:var(--red);color:var(--white)}
+.size-search{display:flex;gap:.5rem;margin-bottom:1rem}
+.catalog-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:1.4rem}
+.sort-bar{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;margin-bottom:1.5rem;padding:.9rem 1.2rem;background:var(--navy2);border-radius:8px;border:1px solid var(--border)}
+.sort-bar .count{font-size:.82rem;color:var(--muted)}
+.sort-bar select{background:var(--navy);border:1px solid var(--border);color:var(--white);padding:.4rem .8rem;border-radius:4px;font-size:.8rem;font-family:'Poppins',sans-serif;outline:none}
+.rfq-float{position:fixed;bottom:6rem;right:2rem;z-index:9980}
+.rfq-btn{background:var(--navy2);border:2px solid var(--gold);color:var(--gold);font-family:'Montserrat',sans-serif;font-size:.8rem;font-weight:700;padding:.65rem 1.2rem;border-radius:6px;cursor:pointer;display:flex;align-items:center;gap:.5rem;transition:all .2s;position:relative}
+.rfq-btn:hover{background:var(--gold);color:var(--navy)}
+.rfq-count{position:absolute;top:-.6rem;right:-.6rem;background:var(--red);color:#fff;width:20px;height:20px;border-radius:50%;font-size:.7rem;display:flex;align-items:center;justify-content:center;display:none}
+@media(max-width:900px){.catalog-layout{grid-template-columns:1fr}.sidebar{position:static}}
+</style>
+</head>
+<body>
+
+<nav class="site-nav">
+  <div class="nav-brand">
+    <div class="nav-brand-name"><span>TYRE</span> PLAZA</div>
+    <div class="nav-brand-sub">Mwanza · Tanzania</div>
+  </div>
+  <ul class="nav-links">
+    <li><a href="../index.html">Nyumbani</a></li>
+    <li><a href="catalog.html">Bidhaa</a></li>
+    <li><a href="gallery.html">Picha</a></li>
+    <li><a href="about.html">Kuhusu</a></li>
+    <li><a href="../blog/index.html">Blog</a></li>
+    <li><a href="contact.html">Wasiliana</a></li>
+    <li><a href="../admin/index.html" class="nav-cta">⚙ Admin</a></li>
+  </ul>
+  <div class="nav-hamburger" onclick="document.querySelector('.nav-links').classList.toggle('open')"><span></span><span></span><span></span></div>
+</nav>
+
+<!-- PAGE HERO -->
+<div class="page-hero">
+  <div class="breadcrumb"><a href="../index.html">Nyumbani</a><span class="breadcrumb-sep">›</span><span>Katalogi ya Bidhaa</span></div>
+  <h1 class="page-hero-title">Katalogi ya <span class="accent">Bidhaa</span></h1>
+  <p class="page-hero-desc">Tairi, Betri na Rims za ubora wa juu. Tafuta kwa brand, aina au ukubwa. Bidhaa zote zipo stokini Mwanza.</p>
+  <div style="display:flex;gap:1rem;flex-wrap:wrap;margin-top:1.5rem">
+    <button onclick="rfqCart.sendWhatsApp()" class="btn btn-gold">📋 Tuma RFQ (List ya Bei)</button>
+    <a href="contact.html" class="btn btn-outline">📞 Wasiliana Nazo</a>
+  </div>
+</div>
+
+<section class="section section-dark">
+  <!-- Category tabs -->
+  <div class="tag-filter" style="margin-bottom:2rem">
+    <button class="tag-btn active" data-cat="all">🗂️ Zote</button>
+    <button class="tag-btn" data-cat="truck">🚛 Tairi Malori</button>
+    <button class="tag-btn" data-cat="passenger">🚗 Tairi Magari</button>
+    <button class="tag-btn" data-cat="suv">🛻 SUV / 4x4</button>
+    <button class="tag-btn" data-cat="bus">🚌 Mabasi</button>
+    <button class="tag-btn" data-cat="battery">⚡ Betri</button>
+    <button class="tag-btn" data-cat="rims">🔩 Rims</button>
+  </div>
+
+  <div class="catalog-layout">
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <h3>🔍 Tafuta kwa Size</h3>
+      <div class="size-search">
+        <input type="text" id="size-input" class="form-control" placeholder="e.g. 315/80R22.5" style="font-size:.8rem"/>
+      </div>
+      <button onclick="filterBySize()" class="btn btn-red btn-sm btn-full">Tafuta</button>
+
+      <h3>🏷️ Brand</h3>
+      <div class="sidebar-check" id="brand-filter">
+        <label><input type="checkbox" value="blackhawk" onchange="sidebarFilter()"> Blackhawk</label>
+        <label><input type="checkbox" value="dynablack" onchange="sidebarFilter()"> Dynablack</label>
+        <label><input type="checkbox" value="royalblack" onchange="sidebarFilter()"> Royalblack</label>
+        <label><input type="checkbox" value="dunlop" onchange="sidebarFilter()"> Dunlop</label>
+        <label><input type="checkbox" value="bfgoodrich" onchange="sidebarFilter()"> BF Goodrich</label>
+        <label><input type="checkbox" value="goodyear" onchange="sidebarFilter()"> Goodyear</label>
+        <label><input type="checkbox" value="gtradial" onchange="sidebarFilter()"> GT Radial</label>
+        <label><input type="checkbox" value="solachei" onchange="sidebarFilter()"> Solachei</label>
+        <label><input type="checkbox" value="evergreen" onchange="sidebarFilter()"> Evergreen</label>
+        <label><input type="checkbox" value="omeron" onchange="sidebarFilter()"> Omeron (Betri)</label>
+      </div>
+
+      <h3>📦 Upatikanaji</h3>
+      <div class="sidebar-check">
+        <label><input type="checkbox" id="filter-instock" onchange="sidebarFilter()"> Inapatikana Sasa ✓</label>
+        <label><input type="checkbox" id="filter-low" onchange="sidebarFilter()"> Stock Chache ⚡</label>
+        <label><input type="checkbox" id="filter-order" onchange="sidebarFilter()"> Agiza Mapema 📦</label>
+      </div>
+
+      <button class="clear-btn" onclick="clearFilters()">✕ Futa Filters Zote</button>
+
+      <div style="margin-top:2rem;padding:1.2rem;background:rgba(192,24,26,.08);border:1px solid rgba(192,24,26,.2);border-radius:8px">
+        <p style="font-size:.75rem;color:var(--gold);font-weight:700;text-transform:uppercase;letter-spacing:.1em;margin-bottom:.5rem">💬 Huna Uhakika?</p>
+        <p style="font-size:.78rem;color:var(--muted);line-height:1.6;margin-bottom:1rem">Wasiliana nasi kwa WhatsApp na tutakusaidia kuchagua tairi sahihi kwa gari lako.</p>
+        <a href="https://wa.me/255719231796" target="_blank" class="btn btn-red btn-sm btn-full">WhatsApp Sasa →</a>
+      </div>
+    </aside>
+
+    <!-- MAIN GRID -->
+    <div>
+      
+      <!-- ══ STOCK MPYA ══ -->
+      <div style="background:linear-gradient(135deg,rgba(34,197,94,.1),rgba(34,197,94,.05));border:1px solid rgba(34,197,94,.3);border-radius:10px;padding:1.5rem;margin-bottom:2rem">
+        <div style="display:flex;align-items:center;gap:.7rem;margin-bottom:1rem">
+          <span style="font-size:1.4rem">🆕</span>
+          <h3 style="font-family:'Montserrat',sans-serif;font-size:.95rem;font-weight:800;text-transform:uppercase;color:#22C55E;letter-spacing:.08em">Stock Mpya Imefika!</h3>
+          <span class="badge badge-green" style="margin-left:auto">Just In</span>
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:.5rem">
+          <span style="background:var(--navy);border:1px solid rgba(34,197,94,.4);color:#22C55E;padding:.4rem .9rem;border-radius:5px;font-family:'Montserrat',sans-serif;font-size:.85rem;font-weight:700">195/65R15</span>
+          <span style="background:var(--navy);border:1px solid rgba(34,197,94,.4);color:#22C55E;padding:.4rem .9rem;border-radius:5px;font-family:'Montserrat',sans-serif;font-size:.85rem;font-weight:700">205/65R15</span>
+          <span style="background:var(--navy);border:1px solid rgba(34,197,94,.4);color:#22C55E;padding:.4rem .9rem;border-radius:5px;font-family:'Montserrat',sans-serif;font-size:.85rem;font-weight:700">215/60R16</span>
+          <span style="background:var(--navy);border:1px solid rgba(34,197,94,.4);color:#22C55E;padding:.4rem .9rem;border-radius:5px;font-family:'Montserrat',sans-serif;font-size:.85rem;font-weight:700">215/65R16</span>
+          <span style="background:var(--navy);border:1px solid rgba(34,197,94,.4);color:#22C55E;padding:.4rem .9rem;border-radius:5px;font-family:'Montserrat',sans-serif;font-size:.85rem;font-weight:700">215/60R17</span>
+          <span style="background:var(--navy);border:1px solid rgba(34,197,94,.4);color:#22C55E;padding:.4rem .9rem;border-radius:5px;font-family:'Montserrat',sans-serif;font-size:.85rem;font-weight:700">225/65R17</span>
+          <span style="background:var(--navy);border:1px solid rgba(34,197,94,.4);color:#22C55E;padding:.4rem .9rem;border-radius:5px;font-family:'Montserrat',sans-serif;font-size:.85rem;font-weight:700">235/65R17</span>
+          <span style="background:var(--navy);border:1px solid rgba(34,197,94,.4);color:#22C55E;padding:.4rem .9rem;border-radius:5px;font-family:'Montserrat',sans-serif;font-size:.85rem;font-weight:700">225/60R18</span>
+          <span style="background:var(--navy);border:1px solid rgba(34,197,94,.4);color:#22C55E;padding:.4rem .9rem;border-radius:5px;font-family:'Montserrat',sans-serif;font-size:.85rem;font-weight:700">235/60R18</span>
+        </div>
+        <div style="margin-top:1rem;display:flex;gap:.7rem;flex-wrap:wrap">
+          <button onclick="waEnquiry('Tairi za Stock Mpya','195/65R15 hadi 235/60R18','')" class="btn btn-red btn-sm">💬 Uliza Bei – WhatsApp</button>
+          <span style="font-size:.75rem;color:var(--muted);align-self:center">📞 0719 231 796 · 0622 377 174 · 0621 357 248</span>
+        </div>
+      </div>
+
+      <div class="sort-bar">
+        <span class="count" id="product-count">Bidhaa: <strong>12</strong></span>
+        <select onchange="sortProducts(this.value)">
+          <option value="default">Panga kwa: Default</option>
+          <option value="name">Jina A–Z</option>
+          <option value="brand">Brand</option>
+          <option value="avail">Upatikanaji</option>
+        </select>
+      </div>
+
+      <div class="catalog-grid" id="product-grid">
+        <!-- PRODUCT 1 -->
+        <div class="prod-card fade-up" data-filter="truck" data-brand="blackhawk" data-avail="in" data-name="Blackhawk HS918">
+          <div class="prod-img"><img src="../tyres-stack.jpg" alt="Blackhawk HS918" data-lb data-src="../tyres-stack.jpg" data-cap="Blackhawk HS918 – Drive Tyre 315/80R22.5"><div class="prod-img-overlay"></div><div class="prod-badges"><span class="badge badge-green">In Stock</span><span class="badge badge-red">Best Seller</span></div></div>
+          <div class="prod-body">
+            <div class="prod-brand">Blackhawk</div><div class="prod-name">HS918 Drive Tyre</div>
+            <div class="prod-size">📏 315/80R22.5 · 295/80R22.5 · 275/80R22.5</div>
+            <div class="prod-specs"><span class="prod-spec-tag">🌍 China</span><span class="prod-spec-tag">✅ 1yr Warranty</span><span class="prod-spec-tag">🚛 Truck</span></div>
+            <div class="prod-avail avail-in"><div class="avail-dot"></div>Inapatikana Sasa</div>
+            <div class="prod-actions">
+              <button onclick="waEnquiry('Blackhawk HS918','315/80R22.5','Blackhawk')" class="btn btn-red btn-sm" style="flex:1">💬 Bei</button>
+              <button onclick="rfqCart.add('HS918 Drive','315/80R22.5','Blackhawk')" class="btn btn-outline btn-sm">📋</button>
+              <button onclick="addToCompare('HS918 Drive','Blackhawk','315/80R22.5','1yr','China','')" class="btn btn-outline btn-sm">⚖️</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- PRODUCT 2 -->
+        <div class="prod-card fade-up" data-filter="truck" data-brand="blackhawk" data-avail="in" data-name="Blackhawk HS102">
+          <div class="prod-img"><img src="../tyres-stack.jpg" alt="Blackhawk HS102" data-lb data-src="../tyres-stack.jpg" data-cap="Blackhawk HS102 Steer Tyre"><div class="prod-img-overlay"></div><div class="prod-badges"><span class="badge badge-green">In Stock</span></div></div>
+          <div class="prod-body">
+            <div class="prod-brand">Blackhawk</div><div class="prod-name">HS102 Steer Tyre</div>
+            <div class="prod-size">📏 315/80R22.5 · 295/80R22.5</div>
+            <div class="prod-specs"><span class="prod-spec-tag">🌍 China</span><span class="prod-spec-tag">✅ 1yr Warranty</span><span class="prod-spec-tag">🚛 Steer</span></div>
+            <div class="prod-avail avail-in"><div class="avail-dot"></div>Inapatikana Sasa</div>
+            <div class="prod-actions">
+              <button onclick="waEnquiry('Blackhawk HS102 Steer','315/80R22.5','Blackhawk')" class="btn btn-red btn-sm" style="flex:1">💬 Bei</button>
+              <button onclick="rfqCart.add('HS102 Steer','315/80R22.5','Blackhawk')" class="btn btn-outline btn-sm">📋</button>
+              <button onclick="addToCompare('HS102 Steer','Blackhawk','315/80R22.5','1yr','China','')" class="btn btn-outline btn-sm">⚖️</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- PRODUCT 3 -->
+        <div class="prod-card fade-up" data-filter="truck" data-brand="dynablack" data-avail="in" data-name="Dynablack Heavy Duty">
+          <div class="prod-img"><img src="../tyres-outdoor.jpg" alt="Dynablack" data-lb data-src="../tyres-outdoor.jpg" data-cap="Dynablack Heavy Duty Drive – 11.00R20"><div class="prod-img-overlay"></div><div class="prod-badges"><span class="badge badge-green">In Stock</span></div></div>
+          <div class="prod-body">
+            <div class="prod-brand">Dynablack</div><div class="prod-name">Heavy Duty Drive</div>
+            <div class="prod-size">📏 11.00R20 · 10.00R20 · 9.00R20 · 8.25R20</div>
+            <div class="prod-specs"><span class="prod-spec-tag">🌍 China</span><span class="prod-spec-tag">✅ 1yr Warranty</span><span class="prod-spec-tag">🚛 Truck/Bus</span></div>
+            <div class="prod-avail avail-in"><div class="avail-dot"></div>Inapatikana Sasa</div>
+            <div class="prod-actions">
+              <button onclick="waEnquiry('Dynablack Heavy Duty','11.00R20','Dynablack')" class="btn btn-red btn-sm" style="flex:1">💬 Bei</button>
+              <button onclick="rfqCart.add('Heavy Duty Drive','11.00R20','Dynablack')" class="btn btn-outline btn-sm">📋</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- PRODUCT 4 -->
+        <div class="prod-card fade-up" data-filter="truck" data-brand="royalblack" data-avail="in" data-name="Royalblack Truck">
+          <div class="prod-img"><img src="../tyres-outdoor.jpg" alt="Royalblack truck" data-lb data-src="../tyres-outdoor.jpg" data-cap="Royalblack – Truck Tyre"><div class="prod-img-overlay"></div><div class="prod-badges"><span class="badge badge-green">In Stock</span></div></div>
+          <div class="prod-body">
+            <div class="prod-brand">Royalblack</div><div class="prod-name">Truck Drive Series</div>
+            <div class="prod-size">📏 315/80R22.5 · 11.00R20 · 10.00R20</div>
+            <div class="prod-specs"><span class="prod-spec-tag">🌍 China</span><span class="prod-spec-tag">✅ Warranty</span><span class="prod-spec-tag">🚛 Truck</span></div>
+            <div class="prod-avail avail-in"><div class="avail-dot"></div>Inapatikana Sasa</div>
+            <div class="prod-actions">
+              <button onclick="waEnquiry('Royalblack Truck Drive','315/80R22.5','Royalblack')" class="btn btn-red btn-sm" style="flex:1">💬 Bei</button>
+              <button onclick="rfqCart.add('Truck Drive','315/80R22.5','Royalblack')" class="btn btn-outline btn-sm">📋</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- PRODUCT 5 – Passenger -->
+        <div class="prod-card fade-up" data-filter="passenger" data-brand="dunlop" data-avail="in" data-name="Dunlop Passenger">
+          <div class="prod-img"><img src="../blackhawk-tyres.jpg" alt="Dunlop passenger" data-lb data-src="../blackhawk-tyres.jpg" data-cap="Dunlop – Passenger Tyres"><div class="prod-img-overlay"></div><div class="prod-badges"><span class="badge badge-green">In Stock</span><span class="badge badge-gold">Premium</span></div></div>
+          <div class="prod-body">
+            <div class="prod-brand">Dunlop</div><div class="prod-name">SP Sport Maxx</div>
+            <div class="prod-size">📏 185/65R15 · 195/65R15 · 205/55R16 · 225/45R17</div>
+            <div class="prod-specs"><span class="prod-spec-tag">🇯🇵 Japan/UK</span><span class="prod-spec-tag">✅ 2yr Warranty</span><span class="prod-spec-tag">🚗 Passenger</span></div>
+            <div class="prod-avail avail-in"><div class="avail-dot"></div>Inapatikana Sasa</div>
+            <div class="prod-actions">
+              <button onclick="waEnquiry('Dunlop SP Sport Maxx','195/65R15','Dunlop')" class="btn btn-red btn-sm" style="flex:1">💬 Bei</button>
+              <button onclick="rfqCart.add('SP Sport Maxx','195/65R15','Dunlop')" class="btn btn-outline btn-sm">📋</button>
+              <button onclick="addToCompare('SP Sport Maxx','Dunlop','195/65R15','2yr','Japan','')" class="btn btn-outline btn-sm">⚖️</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- PRODUCT 6 – Passenger -->
+        <div class="prod-card fade-up" data-filter="passenger" data-brand="goodyear" data-avail="low" data-name="Goodyear Excellence">
+          <div class="prod-img"><img src="../blackhawk-tyres.jpg" alt="Goodyear" data-lb data-src="../blackhawk-tyres.jpg" data-cap="Goodyear Excellence – Passenger"><div class="prod-img-overlay"></div><div class="prod-badges"><span class="badge badge-orange">Stock Chache</span></div></div>
+          <div class="prod-body">
+            <div class="prod-brand">Goodyear</div><div class="prod-name">Excellence Radial</div>
+            <div class="prod-size">📏 195/65R15 · 205/55R16 · 215/60R16</div>
+            <div class="prod-specs"><span class="prod-spec-tag">🇺🇸 USA Brand</span><span class="prod-spec-tag">✅ 2yr Warranty</span><span class="prod-spec-tag">🚗 Passenger</span></div>
+            <div class="prod-avail avail-low"><div class="avail-dot"></div>Stock Chache – Haraka!</div>
+            <div class="prod-actions">
+              <button onclick="waEnquiry('Goodyear Excellence','205/55R16','Goodyear')" class="btn btn-red btn-sm" style="flex:1">💬 Bei</button>
+              <button onclick="rfqCart.add('Excellence Radial','205/55R16','Goodyear')" class="btn btn-outline btn-sm">📋</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- PRODUCT 7 – SUV -->
+        <div class="prod-card fade-up" data-filter="suv" data-brand="bfgoodrich" data-avail="low" data-name="BF Goodrich AT">
+          <div class="prod-img"><img src="../tyres-display.jpg" alt="BF Goodrich" data-lb data-src="../tyres-display.jpg" data-cap="BF Goodrich All Terrain – 4x4 SUV"><div class="prod-img-overlay"></div><div class="prod-badges"><span class="badge badge-gold">4x4 Star</span><span class="badge badge-orange">Stock Chache</span></div></div>
+          <div class="prod-body">
+            <div class="prod-brand">BF Goodrich</div><div class="prod-name">All-Terrain T/A KO2</div>
+            <div class="prod-size">📏 265/65R17 · 285/60R18 · 255/70R16 · 265/70R16</div>
+            <div class="prod-specs"><span class="prod-spec-tag">🇺🇸 USA Brand</span><span class="prod-spec-tag">✅ 2yr Warranty</span><span class="prod-spec-tag">🛻 4x4/SUV</span></div>
+            <div class="prod-avail avail-low"><div class="avail-dot"></div>Stock Chache – Haraka!</div>
+            <div class="prod-actions">
+              <button onclick="waEnquiry('BF Goodrich All-Terrain KO2','265/65R17','BF Goodrich')" class="btn btn-red btn-sm" style="flex:1">💬 Bei</button>
+              <button onclick="rfqCart.add('All-Terrain KO2','265/65R17','BF Goodrich')" class="btn btn-outline btn-sm">📋</button>
+              <button onclick="addToCompare('All-Terrain KO2','BF Goodrich','265/65R17','2yr','USA','')" class="btn btn-outline btn-sm">⚖️</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- PRODUCT 8 – SUV -->
+        <div class="prod-card fade-up" data-filter="suv" data-brand="dunlop" data-avail="in" data-name="Dunlop Grandtrek">
+          <div class="prod-img"><img src="../tyres-display.jpg" alt="Dunlop Grandtrek" data-lb data-src="../tyres-display.jpg" data-cap="Dunlop Grandtrek – SUV/4x4"><div class="prod-img-overlay"></div><div class="prod-badges"><span class="badge badge-green">In Stock</span></div></div>
+          <div class="prod-body">
+            <div class="prod-brand">Dunlop</div><div class="prod-name">Grandtrek AT3</div>
+            <div class="prod-size">📏 265/65R17 · 255/70R16 · 285/60R18</div>
+            <div class="prod-specs"><span class="prod-spec-tag">🇯🇵 Japan Brand</span><span class="prod-spec-tag">✅ 2yr Warranty</span><span class="prod-spec-tag">🛻 SUV</span></div>
+            <div class="prod-avail avail-in"><div class="avail-dot"></div>Inapatikana Sasa</div>
+            <div class="prod-actions">
+              <button onclick="waEnquiry('Dunlop Grandtrek AT3','265/65R17','Dunlop')" class="btn btn-red btn-sm" style="flex:1">💬 Bei</button>
+              <button onclick="rfqCart.add('Grandtrek AT3','265/65R17','Dunlop')" class="btn btn-outline btn-sm">📋</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- PRODUCT 9 – Bus -->
+        <div class="prod-card fade-up" data-filter="bus" data-brand="royalblack" data-avail="in" data-name="Royalblack Bus">
+          <div class="prod-img"><img src="../tyres-stack.jpg" alt="Royalblack bus tyre" data-lb data-src="../tyres-stack.jpg" data-cap="Royalblack Bus Tyre – 10.00R20"><div class="prod-img-overlay"></div><div class="prod-badges"><span class="badge badge-green">In Stock</span></div></div>
+          <div class="prod-body">
+            <div class="prod-brand">Royalblack</div><div class="prod-name">Bus & Coach Series</div>
+            <div class="prod-size">📏 10.00R20 · 11.00R20 · 8.25R16</div>
+            <div class="prod-specs"><span class="prod-spec-tag">🌍 China</span><span class="prod-spec-tag">✅ Warranty</span><span class="prod-spec-tag">🚌 Bus/Coach</span></div>
+            <div class="prod-avail avail-in"><div class="avail-dot"></div>Inapatikana Sasa</div>
+            <div class="prod-actions">
+              <button onclick="waEnquiry('Royalblack Bus Series','10.00R20','Royalblack')" class="btn btn-red btn-sm" style="flex:1">💬 Bei</button>
+              <button onclick="rfqCart.add('Bus & Coach Series','10.00R20','Royalblack')" class="btn btn-outline btn-sm">📋</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- PRODUCT 10 – Truck Light -->
+        <div class="prod-card fade-up" data-filter="truck" data-brand="gtradial" data-avail="in" data-name="GT Radial Truck">
+          <div class="prod-img"><img src="../tyres-stack.jpg" alt="GT Radial" data-lb data-src="../tyres-stack.jpg" data-cap="GT Radial – Light Truck & Van"><div class="prod-img-overlay"></div><div class="prod-badges"><span class="badge badge-green">In Stock</span></div></div>
+          <div class="prod-body">
+            <div class="prod-brand">GT Radial</div><div class="prod-name">Savero A/T Plus</div>
+            <div class="prod-size">📏 7.50R16 · 7.00R16 · 8.25R16 · LT265/75R16</div>
+            <div class="prod-specs"><span class="prod-spec-tag">🇮🇩 Indonesia</span><span class="prod-spec-tag">✅ Warranty</span><span class="prod-spec-tag">🚐 Light Truck</span></div>
+            <div class="prod-avail avail-in"><div class="avail-dot"></div>Inapatikana Sasa</div>
+            <div class="prod-actions">
+              <button onclick="waEnquiry('GT Radial Savero A/T','7.50R16','GT Radial')" class="btn btn-red btn-sm" style="flex:1">💬 Bei</button>
+              <button onclick="rfqCart.add('Savero A/T Plus','7.50R16','GT Radial')" class="btn btn-outline btn-sm">📋</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- PRODUCT 11 – Battery -->
+        <div class="prod-card fade-up" data-filter="battery" data-brand="omeron" data-avail="in" data-name="Omeron Car Battery">
+          <div class="prod-img" style="background:#060B20;display:flex;align-items:center;justify-content:center;font-size:5rem"><img src="../batteries-stock.jpg" alt="Betri" data-lb data-src="../batteries-stock.jpg" data-cap="Omeron – Betri za Magari na Malori"><div class="prod-img-overlay"></div><div class="prod-badges"><span class="badge badge-green">Stock Kubwa</span></div></div>
+          <div class="prod-body">
+            <div class="prod-brand">Omeron & Others</div><div class="prod-name">Passenger Car Battery</div>
+            <div class="prod-size">📏 45Ah · 55Ah · 60Ah · 70Ah · 75Ah</div>
+            <div class="prod-specs"><span class="prod-spec-tag">⚡ MF Technology</span><span class="prod-spec-tag">✅ Guaranteed</span><span class="prod-spec-tag">🔧 Free Install</span></div>
+            <div class="prod-avail avail-in"><div class="avail-dot"></div>Stock Kubwa Sana</div>
+            <div class="prod-actions">
+              <button onclick="waEnquiry('Betri ya Gari – Passenger','60Ah','Omeron')" class="btn btn-red btn-sm" style="flex:1">💬 Bei</button>
+              <button onclick="rfqCart.add('Car Battery 60Ah','60Ah','Omeron')" class="btn btn-outline btn-sm">📋</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- PRODUCT 12 – Truck Battery -->
+        <div class="prod-card fade-up" data-filter="battery" data-brand="omeron" data-avail="in" data-name="Truck Battery">
+          <div class="prod-img" style="background:#060B20"><img src="../batteries-stock.jpg" alt="Betri malori" data-lb data-src="../batteries-stock.jpg" data-cap="Betri za Malori – 100Ah hadi 200Ah"><div class="prod-img-overlay"></div><div class="prod-badges"><span class="badge badge-green">In Stock</span></div></div>
+          <div class="prod-body">
+            <div class="prod-brand">Various Brands</div><div class="prod-name">Truck & Heavy Duty Battery</div>
+            <div class="prod-size">📏 100Ah · 120Ah · 150Ah · 180Ah · 200Ah</div>
+            <div class="prod-specs"><span class="prod-spec-tag">⚡ Heavy Duty</span><span class="prod-spec-tag">✅ Guaranteed</span><span class="prod-spec-tag">🚛 Truck/Bus</span></div>
+            <div class="prod-avail avail-in"><div class="avail-dot"></div>Inapatikana Sasa</div>
+            <div class="prod-actions">
+              <button onclick="waEnquiry('Betri ya Malori','150Ah','Heavy Duty')" class="btn btn-red btn-sm" style="flex:1">💬 Bei</button>
+              <button onclick="rfqCart.add('Truck Battery 150Ah','150Ah','Heavy Duty')" class="btn btn-outline btn-sm">📋</button>
+            </div>
+          </div>
+        </div>
+
+      
+        <!-- NEW STOCK – Passenger sizes -->
+        <div class="prod-card fade-up" data-filter="passenger" data-brand="mixed" data-avail="in" data-name="Stock Mpya 195/65R15">
+          <div class="prod-img"><img src="../blackhawk-tyres.jpg" alt="Tairi mpya 195/65R15" data-lb data-src="../blackhawk-tyres.jpg" data-cap="Stock Mpya – 195/65R15 · 205/65R15"><div class="prod-img-overlay"></div><div class="prod-badges"><span class="badge badge-green">🆕 Mpya</span></div></div>
+          <div class="prod-body">
+            <div class="prod-brand">Mixed Brands</div>
+            <div class="prod-name">Passenger – 15 Inch</div>
+            <div class="prod-size">📏 195/65R15 · 205/65R15</div>
+            <div class="prod-specs"><span class="prod-spec-tag">🚗 Passenger</span><span class="prod-spec-tag">✅ In Stock</span><span class="prod-spec-tag">🆕 Stock Mpya</span></div>
+            <div class="prod-avail avail-in"><div class="avail-dot"></div>Stock Mpya – Inapatikana Sasa</div>
+            <div class="prod-actions">
+              <button onclick="waEnquiry('Tairi Mpya Passenger 15 inch','195/65R15 au 205/65R15','')" class="btn btn-red btn-sm" style="flex:1">💬 Bei</button>
+              <button onclick="rfqCart.add('Passenger 15inch','195/65R15','Mixed')" class="btn btn-outline btn-sm">📋</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="prod-card fade-up" data-filter="passenger" data-brand="mixed" data-avail="in" data-name="Stock Mpya 215/60R16">
+          <div class="prod-img"><img src="../blackhawk-tyres.jpg" alt="Tairi mpya 16 inch" data-lb data-src="../blackhawk-tyres.jpg" data-cap="Stock Mpya – 215/60R16 · 215/65R16"><div class="prod-img-overlay"></div><div class="prod-badges"><span class="badge badge-green">🆕 Mpya</span></div></div>
+          <div class="prod-body">
+            <div class="prod-brand">Mixed Brands</div>
+            <div class="prod-name">Passenger – 16 Inch</div>
+            <div class="prod-size">📏 215/60R16 · 215/65R16</div>
+            <div class="prod-specs"><span class="prod-spec-tag">🚗 Passenger</span><span class="prod-spec-tag">✅ In Stock</span><span class="prod-spec-tag">🆕 Stock Mpya</span></div>
+            <div class="prod-avail avail-in"><div class="avail-dot"></div>Stock Mpya – Inapatikana Sasa</div>
+            <div class="prod-actions">
+              <button onclick="waEnquiry('Tairi Mpya 16 inch','215/60R16 au 215/65R16','')" class="btn btn-red btn-sm" style="flex:1">💬 Bei</button>
+              <button onclick="rfqCart.add('Passenger 16inch','215/60R16','Mixed')" class="btn btn-outline btn-sm">📋</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="prod-card fade-up" data-filter="suv" data-brand="mixed" data-avail="in" data-name="Stock Mpya 17 Inch">
+          <div class="prod-img"><img src="../tyres-display.jpg" alt="Tairi 17 inch" data-lb data-src="../tyres-display.jpg" data-cap="Stock Mpya – 215/60R17 · 225/65R17 · 235/65R17"><div class="prod-img-overlay"></div><div class="prod-badges"><span class="badge badge-green">🆕 Mpya</span></div></div>
+          <div class="prod-body">
+            <div class="prod-brand">Mixed Brands</div>
+            <div class="prod-name">SUV / Passenger – 17 Inch</div>
+            <div class="prod-size">📏 215/60R17 · 225/65R17 · 235/65R17</div>
+            <div class="prod-specs"><span class="prod-spec-tag">🛻 SUV</span><span class="prod-spec-tag">✅ In Stock</span><span class="prod-spec-tag">🆕 Stock Mpya</span></div>
+            <div class="prod-avail avail-in"><div class="avail-dot"></div>Stock Mpya – Inapatikana Sasa</div>
+            <div class="prod-actions">
+              <button onclick="waEnquiry('Tairi Mpya 17 inch','215/60R17 au 225/65R17 au 235/65R17','')" class="btn btn-red btn-sm" style="flex:1">💬 Bei</button>
+              <button onclick="rfqCart.add('SUV 17inch','225/65R17','Mixed')" class="btn btn-outline btn-sm">📋</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="prod-card fade-up" data-filter="suv" data-brand="mixed" data-avail="in" data-name="Stock Mpya 18 Inch">
+          <div class="prod-img"><img src="../tyres-display.jpg" alt="Tairi 18 inch" data-lb data-src="../tyres-display.jpg" data-cap="Stock Mpya – 225/60R18 · 235/60R18"><div class="prod-img-overlay"></div><div class="prod-badges"><span class="badge badge-green">🆕 Mpya</span><span class="badge badge-gold">SUV</span></div></div>
+          <div class="prod-body">
+            <div class="prod-brand">Mixed Brands</div>
+            <div class="prod-name">SUV / 4x4 – 18 Inch</div>
+            <div class="prod-size">📏 225/60R18 · 235/60R18</div>
+            <div class="prod-specs"><span class="prod-spec-tag">🛻 SUV/4x4</span><span class="prod-spec-tag">✅ In Stock</span><span class="prod-spec-tag">🆕 Stock Mpya</span></div>
+            <div class="prod-avail avail-in"><div class="avail-dot"></div>Stock Mpya – Inapatikana Sasa</div>
+            <div class="prod-actions">
+              <button onclick="waEnquiry('Tairi Mpya 18 inch','225/60R18 au 235/60R18','')" class="btn btn-red btn-sm" style="flex:1">💬 Bei</button>
+              <button onclick="rfqCart.add('SUV 18inch','225/60R18','Mixed')" class="btn btn-outline btn-sm">📋</button>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- end catalog-grid -->
+
+      <!-- RFQ FORM SECTION -->
+      <div style="margin-top:3rem;background:var(--navy2);border:1px solid rgba(245,168,0,.2);border-radius:12px;padding:2rem">
+        <h3 style="font-family:'Montserrat',sans-serif;font-size:1.2rem;color:var(--gold);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.5rem">📋 Tuma Ombi la Bei (RFQ)</h3>
+        <p style="font-size:.83rem;color:var(--muted);margin-bottom:1.5rem">Jaza fomu hii na tutakujibu kwa WhatsApp ndani ya saa moja.</p>
+        <div class="form-row">
+          <div class="form-group"><label class="form-label">Jina Lako *</label><input class="form-control" id="rfq-name" placeholder="Jina kamili"/></div>
+          <div class="form-group"><label class="form-label">Simu / WhatsApp *</label><input class="form-control" id="rfq-phone" placeholder="+255 7XX XXX XXX"/></div>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label class="form-label">Aina ya Gari</label><input class="form-control" id="rfq-vehicle" placeholder="e.g. Toyota Prado, Scania Truck"/></div>
+          <div class="form-group"><label class="form-label">Size ya Tairi (kama unajua)</label><input class="form-control" id="rfq-size" placeholder="e.g. 315/80R22.5"/></div>
+        </div>
+        <div class="form-group"><label class="form-label">Maelezo ya Bidhaa Unazohitaji *</label><textarea class="form-control" id="rfq-details" placeholder="Eleza bidhaa unazohitaji – aina, brand, idadi, n.k."></textarea></div>
+        <div class="form-group">
+          <label class="form-label">Aina ya Mteja</label>
+          <select class="form-control" id="rfq-type">
+            <option value="">-- Chagua --</option>
+            <option>Mtu Binafsi</option><option>Kampuni ya Usafirishaji</option>
+            <option>Fleet Operator</option><option>Garage / Workshop</option>
+            <option>Spare Parts Dealer</option><option>Serikali / Taasisi</option>
+          </select>
+        </div>
+        <button onclick="submitRFQ()" class="btn btn-gold btn-lg">📤 Tuma Ombi kwa WhatsApp →</button>
+      </div>
+
+    </div><!-- end main -->
+  </div><!-- end layout -->
+</section>
+
+<!-- COMPARE PANEL -->
+<div id="compare-panel" style="display:none;position:fixed;bottom:0;left:0;right:0;z-index:9980;background:rgba(6,10,32,.97);border-top:2px solid var(--gold);padding:1rem 5%"></div>
+
+<div class="rfq-float">
+  <button class="rfq-btn" onclick="rfqCart.sendWhatsApp()">
+    📋 RFQ List <span class="rfq-count rfq-badge" id="rfq-badge">0</span>
+  </button>
+</div>
+
+<a href="https://wa.me/255719231796" class="wa-float" target="_blank">💬</a>
+<div id="lightbox"><button class="lb-close">✕</button><img class="lb-img" src="" alt=""/><div class="lb-caption"></div></div>
+
+<footer class="site-footer">
+  <div class="footer-bottom">
+    <div class="footer-copy">© 2025 Tyre Plaza Ltd · <a href="../index.html" style="color:var(--muted)">Nyumbani</a> · <a href="contact.html" style="color:var(--muted)">Wasiliana</a></div>
+    <div class="footer-powered">Powered by <a href="#">TEUS Technology</a></div>
+  </div>
+</footer>
+
+<script src="../js/main.js"></script>
+<script>
+function filterBySize(){
+  const s=document.getElementById('size-input').value.toLowerCase();
+  document.querySelectorAll('.prod-card').forEach(c=>{
+    const size=c.querySelector('.prod-size')?.textContent.toLowerCase()||'';
+    c.style.display=(!s||size.includes(s))?'':'none';
+  });
+  updateCount();
+}
+function sidebarFilter(){
+  const brands=[...document.querySelectorAll('#brand-filter input:checked')].map(i=>i.value);
+  const inStock=document.getElementById('filter-instock').checked;
+  const low=document.getElementById('filter-low').checked;
+  const order=document.getElementById('filter-order').checked;
+  document.querySelectorAll('.prod-card').forEach(c=>{
+    const b=c.dataset.brand||'';
+    const a=c.dataset.avail||'';
+    const brandOK=!brands.length||brands.some(br=>b.includes(br));
+    const availOK=(!inStock&&!low&&!order)||(inStock&&a==='in')||(low&&a==='low')||(order&&a==='order');
+    c.style.display=(brandOK&&availOK)?'':'none';
+  });
+  updateCount();
+}
+function clearFilters(){
+  document.querySelectorAll('#brand-filter input, #filter-instock, #filter-low, #filter-order').forEach(i=>i.checked=false);
+  document.getElementById('size-input').value='';
+  document.querySelectorAll('.prod-card').forEach(c=>c.style.display='');
+  updateCount();
+}
+function updateCount(){
+  const vis=[...document.querySelectorAll('.prod-card')].filter(c=>c.style.display!=='none').length;
+  document.getElementById('product-count').innerHTML=`Bidhaa: <strong>${vis}</strong>`;
+}
+function sortProducts(v){
+  const grid=document.getElementById('product-grid');
+  const cards=[...grid.querySelectorAll('.prod-card')];
+  cards.sort((a,b)=>{
+    if(v==='name') return (a.dataset.name||'').localeCompare(b.dataset.name||'');
+    if(v==='brand') return (a.dataset.brand||'').localeCompare(b.dataset.brand||'');
+    if(v==='avail') return (a.dataset.avail==='in'?0:1)-(b.dataset.avail==='in'?0:1);
+    return 0;
+  });
+  cards.forEach(c=>grid.appendChild(c));
+}
+function submitRFQ(){
+  const name=document.getElementById('rfq-name').value;
+  const phone=document.getElementById('rfq-phone').value;
+  const vehicle=document.getElementById('rfq-vehicle').value;
+  const size=document.getElementById('rfq-size').value;
+  const details=document.getElementById('rfq-details').value;
+  const type=document.getElementById('rfq-type').value;
+  if(!name||!phone||!details){showToast('Jaza sehemu zinazohitajika!','red');return}
+  const msg=`📋 OMBI LA BEI (RFQ) – Tyre Plaza\n\n👤 Jina: ${name}\n📞 Simu: ${phone}\n🚗 Gari: ${vehicle||'Haijatajwa'}\n📏 Size: ${size||'Haijatajwa'}\n💼 Aina: ${type||'Haijatajwa'}\n\n📝 Maelezo:\n${details}\n\n(Toka: tyreplaza.co.tz/catalog)`;
+  window.open(`https://wa.me/255719231796?text=${encodeURIComponent(msg)}`,'_blank');
+}
+</script>
+</body>
+</html>
